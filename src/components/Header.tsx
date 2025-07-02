@@ -1,15 +1,23 @@
 
 import React from 'react';
-import { Search, User, Menu } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, Menu } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import UserProfile from './UserProfile';
 
 const Header = () => {
+  const { user } = useAuth();
+
   return (
     <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-red-500">BookMyShow</h1>
+            <Link to="/">
+              <h1 className="text-2xl font-bold text-red-500">BookMyShow</h1>
+            </Link>
           </div>
           
           {/* Search Bar - Hidden on mobile */}
@@ -29,9 +37,17 @@ const Header = () => {
             <button className="text-gray-300 hover:text-white transition-colors">
               <Search className="w-6 h-6 md:hidden" />
             </button>
-            <button className="text-gray-300 hover:text-white transition-colors">
-              <User className="w-6 h-6" />
-            </button>
+            
+            {user ? (
+              <UserProfile />
+            ) : (
+              <Link to="/auth">
+                <Button className="bg-red-600 hover:bg-red-700">
+                  Sign In
+                </Button>
+              </Link>
+            )}
+            
             <button className="text-gray-300 hover:text-white transition-colors md:hidden">
               <Menu className="w-6 h-6" />
             </button>
