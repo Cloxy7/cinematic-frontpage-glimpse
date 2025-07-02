@@ -26,6 +26,8 @@ export const useMovies = () => {
   return useQuery({
     queryKey: ['movies'],
     queryFn: async () => {
+      console.log('Fetching movies from Supabase...');
+      
       const { data, error } = await supabase
         .from('movies')
         .select('*')
@@ -33,9 +35,11 @@ export const useMovies = () => {
         .order('created_at', { ascending: false });
 
       if (error) {
+        console.error('Error fetching movies:', error);
         throw error;
       }
 
+      console.log('Movies fetched successfully:', data);
       return data as Movie[];
     },
   });
